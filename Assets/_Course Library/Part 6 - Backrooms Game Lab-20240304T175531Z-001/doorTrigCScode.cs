@@ -11,7 +11,7 @@ public class DoorManager : MonoBehaviour // This script should be on the Door Tr
     void Update()
     {
         // Check if the player is close enough to the door and the door is not already open
-        if (PlayerCasting.DistanceFromTarget < 4 && !isDoorOpen) 
+        if (PlayerCasting.DistanceFromTarget < 3.5 && !isDoorOpen) 
         {
             // Check for A button press on the right-hand controller
             if (InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed) && isPressed)
