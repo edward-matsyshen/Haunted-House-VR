@@ -7,31 +7,44 @@ namespace NavKeypad
 {
     public class KeypadInteractionFPV : MonoBehaviour
     {
-        private InputDevice rightHandDevice;
+        public Keypad keypad; // Reference to your Keypad script
+        public Transform interactionOrigin; // The origin of interaction, e.g., a VR controller or camera
+        public LayerMask keypadLayer; // Layer mask to only detect keypad buttons
         public float interactionDistance = 0.5f; // Set this to your preferred interaction distance
+
+        private InputDevice rightHandDevice;
 
         private void Start()
         {
-            // Get the right hand device at the start
+            // Attempt to get the right hand device at the start
             rightHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
         }
 
-        private void Update()
+        void Update()
         {
-            bool aButtonPressed = false;
-            rightHandDevice.TryGetFeatureValue(CommonUsages.primaryButton, out aButtonPressed); // For the A button
-
-            if (aButtonPressed)
+            // Ensure the right hand device is valid
+            if (!rightHandDevice.isValid)
             {
-                // Perform a proximity check to simulate pressing a button when near enough and A button is pressed
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, interactionDistance);
-                foreach (var hitCollider in hitColliders)
+                rightHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+            }
+
+            if (rightHandDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed) && isPressed)
+            {
+                OnAButtonPressed();
+            }
+        }
+
+        void OnAButtonPressed()
+        {
+            // Cast a ray from the interaction origin forward
+            if (Physics.Raycast(interactionOrigin.position, interactionOrigin.forward, out RaycastHit hit, interactionDistance, keypadLayer))
+            {
+                // Assuming your keypad buttons have colliders and are differentiated by an identifiable property (e.g., name or tag)
+                var button = hit.collider.GetComponent<KeypadButton>(); // Assuming you have a KeypadButton component that can identify the button
+                if (button != null)
                 {
-                    if (hitCollider.TryGetComponent(out KeypadButton keypadButton))
-                    {
-                        keypadButton.PressButton();
-                        break; // Assuming you only want to press one button at a time
-                    }
+                    // Call the method to add input on the keypad
+                    keypad.AddInput(button.ButtonValue); // Assuming ButtonValue is a property that holds the number or command the button represents
                 }
             }
         }

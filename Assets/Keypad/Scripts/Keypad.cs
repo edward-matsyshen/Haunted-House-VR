@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR;
 
 namespace NavKeypad { 
 public class Keypad : MonoBehaviour
@@ -38,19 +39,48 @@ public class Keypad : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
 
+
+
     private string currentInput;
     private bool displayingResult = false;
     private bool accessWasGranted = false;
 
-    private void Awake()
+
+    private string lastButtonValue = "";
+
+    public void SetLastButtonValue(string value)
+    {
+            lastButtonValue = value;
+    }
+
+        private void Awake()
     {
         ClearInput();
         panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
     }
 
+        private void Update()
+        {
+            HandleOculusAButton();
+        }
 
-    //Gets value from pressedbutton
-    public void AddInput(string input)
+        private void HandleOculusAButton()
+        {
+            InputDevice rightHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+            bool isAPressed = false;
+            if (rightHandDevice.TryGetFeatureValue(CommonUsages.primaryButton, out isAPressed) && isAPressed)
+            {
+                // Use the last button value when the "A" button is pressed.
+                if (!string.IsNullOrEmpty(lastButtonValue))
+                {
+                    AddInput(lastButtonValue);
+                }
+            }
+        }
+
+
+        //Gets value from pressedbutton
+        public void AddInput(string input)
     {
         audioSource.PlayOneShot(buttonClickedSfx);
         if (displayingResult || accessWasGranted) return;
