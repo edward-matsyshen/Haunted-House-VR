@@ -19,16 +19,16 @@ public class Outdoor_Transition : MonoBehaviour
             
             moveProvider = other.GetComponentInParent<ActionBasedContinuousMoveProvider>(); // Assuming the XR Rig is a parent of the collider object
             StartCoroutine(TeleportAfterDelay(other.gameObject));
-            if (directionalLight != null)
-            {
-                // Turn off the directional light
-                directionalLight.enabled = false;
-                Debug.Log("Directional light turned off.");
-            }
-            else
-            {
-                Debug.LogWarning("No directional light found in the scene.");
-            }
+            //if (directionalLight != null)
+            //{
+            //    // Turn off the directional light
+            //    directionalLight.enabled = false;
+            //    Debug.Log("Directional light turned off.");
+            //}
+            //else
+            //{
+            //    Debug.LogWarning("No directional light found in the scene.");
+            //}
         }
             
    }
