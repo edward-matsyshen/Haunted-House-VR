@@ -8,10 +8,10 @@ public class DoorManager : MonoBehaviour // This script should be on the Door Tr
     public AudioSource DoorOpenSound;
     private bool isDoorOpen = false; // To prevent the door from being repeatedly triggered
 
-    void Update()
+    private void OnTriggerStay(Collider other)
     {
-        // Check if the player is close enough to the door and the door is not already open
-        if (PlayerCasting.DistanceFromTarget < 3.5 && !isDoorOpen) 
+        // Check if the collider is tagged as "Player" and the door is not already open
+        if (other.CompareTag("Player") && !isDoorOpen)
         {
             // Check for A button press on the right-hand controller
             if (InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed) && isPressed)
