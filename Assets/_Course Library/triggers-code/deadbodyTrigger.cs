@@ -1,6 +1,7 @@
 using UnityEngine.XR;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections; // Required for coroutines
 
 public class deadbodyTrigger : MonoBehaviour
 {
@@ -17,12 +18,15 @@ public class deadbodyTrigger : MonoBehaviour
         // Check if the player is close enough and the animation is not already playing
         if (distanceToPlayer <= triggerDistance && !bodyAnimation.isPlaying)
         {
-            TriggerAnimationAndSound();
+            StartCoroutine(DelayedTriggerAnimationAndSound());
         }
     }
 
-    private void TriggerAnimationAndSound()
+    private IEnumerator DelayedTriggerAnimationAndSound()
     {
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(2);
+
         // Play the animation
         bodyAnimation.Play();
 
