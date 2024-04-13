@@ -8855,6 +8855,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Painting
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 3e1b8433c0a04824fac62aa298d9a3f4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 3e1b8433c0a04824fac62aa298d9a3f4, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.1856
@@ -10357,6 +10361,16 @@ PrefabInstance:
         type: 3}
       propertyPath: passwordLimit
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799646515135638243, guid: a8ee8a0a877c4e64fa1915f8445c3110,
+        type: 3}
+      propertyPath: validPasswords.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799646515135638243, guid: a8ee8a0a877c4e64fa1915f8445c3110,
+        type: 3}
+      propertyPath: validPasswords.Array.data[0]
+      value: 123
       objectReference: {fileID: 0}
     - target: {fileID: 7860745626686337291, guid: a8ee8a0a877c4e64fa1915f8445c3110,
         type: 3}
