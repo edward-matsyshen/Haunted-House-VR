@@ -22,6 +22,7 @@ public class hideWhenNotLooking : MonoBehaviour
         // Check if the main camera is within the hide distance
         if (mainCamera != null && Vector3.Distance(transform.position, mainCamera.transform.position) < hideDistance)
         {
+<<<<<<< Updated upstream
             // Check if the main camera and the object renderer are valid
             if (objectRenderer != null)
             {
@@ -41,6 +42,18 @@ public class hideWhenNotLooking : MonoBehaviour
             {
                 // Log a warning if the object renderer is not found
                 Debug.LogWarning("Object renderer not found!");
+=======
+            // Check if the object is visible to the main camera
+            if (!IsVisibleFrom(mainCamera, objectRenderer))
+            {
+                // If the object is not visible, hide or deactivate it
+                gameObject.SetActive(false); // Alternatively, you can use objectRenderer.enabled = false;
+            }
+            else
+            {
+                // If the object is visible, ensure it's active or visible
+                gameObject.SetActive(true); // Alternatively, you can use objectRenderer.enabled = true;
+>>>>>>> Stashed changes
             }
         }
         else
