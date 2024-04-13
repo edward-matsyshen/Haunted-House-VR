@@ -7,7 +7,8 @@ using UnityEngine.XR;
 public class KeypadController : MonoBehaviour
 {
     public DoorController door;
-    public string password;
+    // Replace the single password string with a list of passwords
+    public List<string> validPasswords = new List<string>();
     public int passwordLimit;
     public Text passwordText;
 
@@ -19,6 +20,9 @@ public class KeypadController : MonoBehaviour
     private void Start()
     {
         passwordText.text = "";
+
+        // Initialize the validPasswords list here, if needed, or directly in the Unity Editor
+        // Example: validPasswords.AddRange(new string[] {"password1", "password2", "password3"});
     }
 
     public void PasswordEntry(string number)
@@ -28,16 +32,16 @@ public class KeypadController : MonoBehaviour
             Clear();
             return;
         }
-        else if(number == "Enter")
+        else if (number == "Enter")
         {
             Enter();
             return;
         }
 
         int length = passwordText.text.ToString().Length;
-        if(length<passwordLimit)
+        if (length < passwordLimit)
         {
-            passwordText.text = passwordText.text + number;
+            passwordText.text += number;
         }
     }
 
@@ -49,7 +53,8 @@ public class KeypadController : MonoBehaviour
 
     private void Enter()
     {
-        if (passwordText.text == password)
+        // Check if the entered password matches any in the validPasswords list
+        if (validPasswords.Contains(passwordText.text))
         {
             door.lockedByPassword = false;
 
@@ -57,7 +62,6 @@ public class KeypadController : MonoBehaviour
                 audioSource.PlayOneShot(correctSound);
 
             passwordText.color = Color.green;
-            StartCoroutine(waitAndClear());
         }
         else
         {
@@ -65,8 +69,9 @@ public class KeypadController : MonoBehaviour
                 audioSource.PlayOneShot(wrongSound);
 
             passwordText.color = Color.red;
-            StartCoroutine(waitAndClear());
         }
+
+        StartCoroutine(waitAndClear());
     }
 
     IEnumerator waitAndClear()
@@ -74,6 +79,7 @@ public class KeypadController : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
         Clear();
     }
-
-
 }
+
+
+

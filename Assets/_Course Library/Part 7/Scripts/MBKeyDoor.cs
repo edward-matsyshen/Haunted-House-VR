@@ -5,61 +5,78 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class MBKeyDoor : MonoBehaviour
 {
     [Header("Attributes")]
-
-    [Tooltip("The name of the key that is required.")] public string keyName = "";
+    public string keyName = "";
 
     [Header("References")]
-
     public Animation Door;
-
     public AudioSource DoorOpenSound;
-
-    private KeyManager km;
-
     public AudioSource LockedDoorSound;
 
-    private bool isUnlocked;
+    private KeyManager km;
+    private bool isDoorOpen = false; // To prevent the door from being repeatedly triggered
+    private bool playerInTrigger = false; // Flag to check if player is in trigger
 
     private void Start()
     {
-        km = FindObjectOfType<KeyManager>(); // Assign
+        km = FindObjectOfType<KeyManager>(); // Ensure there's a KeyManager component in the scene
     }
 
-    private void OnMouseOver() // Activates when the player looks at the door
+    private void OnTriggerEnter(Collider other)
     {
-        if (PlayerCasting.DistanceFromTarget <= 4) // If the player IS close enough to the door..
+        if (other.CompareTag("Player"))
+        {
+            playerInTrigger = true; // Set flag true when player enters trigger
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInTrigger = false; // Reset flag when player leaves trigger
+        }
+    }
+
+    private void Update()
+    {
+        if (playerInTrigger && !isDoorOpen) // Check if player is in trigger and door isn't already open
         {
             // Check for A button press on the right-hand controller
             if (InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed) && isPressed)
             {
-                string keyToRemove = null;
-                foreach (string key in km.keysInInventory) // Check to see if the player has key
-                {
-                    if (key.Trim().ToLower() == keyName.Trim().ToLower())
-                    {
-                        GetComponent<BoxCollider>().enabled = false; // Turns off the player's ability to open the door again even though it's already open
-
-                        Door.Play(); // Play the door open animation
-
-                        DoorOpenSound.Play(); // Play the door open sound
-
-                        keyToRemove = key; // Mark the key for removal
-
-                        isUnlocked = true;
-                        break; // Exit the loop once the key is found and marked for removal
-                    }
-                }
-
-                if (keyToRemove != null)
-                {
-                    km.keysInInventory.Remove(keyToRemove); // Removes the key from the inventory
-                }
-
-                if (!isUnlocked)
-                {
-                    LockedDoorSound.Play();
-                }
+                CheckForKeyAndOpenDoor();
             }
         }
+    }
+
+    private void CheckForKeyAndOpenDoor()
+    {
+        string keyToRemove = null;
+        foreach (string key in km.keysInInventory)
+        {
+            if (key.Trim().ToLower() == keyName.Trim().ToLower())
+            {
+                OpenDoor();
+                keyToRemove = key; // Mark the key for removal
+                break; // Exit the loop once the key is found and marked for removal
+            }
+        }
+
+        if (keyToRemove != null)
+        {
+            km.keysInInventory.Remove(keyToRemove); // Removes the key from the inventory
+        }
+        else
+        {
+            LockedDoorSound.Play(); // Play locked door sound if no key found
+        }
+    }
+
+    void OpenDoor()
+    {
+        GetComponent<BoxCollider>().enabled = false; // Optionally disable the collider to prevent re-triggering
+        Door.Play(); // Play the door open animation
+        DoorOpenSound.Play(); // Play the door open sound
+        isDoorOpen = true; // Mark the door as open
     }
 }
