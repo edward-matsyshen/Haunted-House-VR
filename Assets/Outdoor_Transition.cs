@@ -10,15 +10,21 @@ public class Outdoor_Transition : MonoBehaviour
     private ActionBasedContinuousMoveProvider moveProvider;
     // Reference to the directional light
     public Light directionalLight;
+    private bool isTeleporting = false;  // To prevent multiple teleportations simultaneously
 
-   private void OnTriggerEnter(Collider other)
-   {
-        
-        if (other.CompareTag("Player"))
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && !isTeleporting)
         {
-            
             moveProvider = other.GetComponentInParent<ActionBasedContinuousMoveProvider>(); // Assuming the XR Rig is a parent of the collider object
+            if (moveProvider == null)
+            {
+                Debug.LogWarning("MoveProvider not found on the player.");
+                return; // Early exit if no MoveProvider found
+            }
+
             StartCoroutine(TeleportAfterDelay(other.gameObject));
+
             if (directionalLight != null)
             {
                 // Turn off the directional light
@@ -30,29 +36,23 @@ public class Outdoor_Transition : MonoBehaviour
                 Debug.LogWarning("No directional light found in the scene.");
             }
         }
-            
-   }
+    }
 
-   private IEnumerator TeleportAfterDelay(GameObject player)
-        {
-            // Disable movement
-            if (moveProvider != null) moveProvider.enabled = false;
+    private IEnumerator TeleportAfterDelay(GameObject player)
+    {
+        isTeleporting = true;
+        // Disable movement
+        moveProvider.enabled = false;
 
-            // Instantiate the effect prefab at the teleport location, facing the player's forward direction
+        // Wait for the specified delay
+        yield return new WaitForSeconds(teleportDelay);
 
-            // Play the teleport sound effect
+        // Teleport the player to the target location and adjust rotation to match target
+        player.transform.position = targetTeleportLocation.position;
+        player.transform.rotation = targetTeleportLocation.rotation;
 
-            // Wait for the specified delay
-            yield return new WaitForSeconds(teleportDelay);
-
-            // Teleport the player to the target location and adjust rotation to match target
-            player.transform.position = targetTeleportLocation.position;
-            player.transform.rotation = targetTeleportLocation.rotation;
-
-            // Optionally, if you want to apply a fade effect, call the fade method here
-            // Make sure the fade in completes before moving the player and fade out after the move
-
-            // Re-enable movement
-            if (moveProvider != null) moveProvider.enabled = true;
-        }
+        // Re-enable movement
+        moveProvider.enabled = true;
+        isTeleporting = false;
+    }
 }
