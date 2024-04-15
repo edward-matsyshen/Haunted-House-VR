@@ -10,14 +10,6 @@ public class SimpleSkeletonController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        // Initially deactivate after 60 seconds
-        Invoke("DeactivateGameObject", 1f);
-
-        // Reactivate after 180 seconds from start (120 seconds after deactivation)
-        Invoke("ReactivateGameObject", 40f);
-
-        // Destroy 120 seconds after reactivation (300 seconds from start)
-        Invoke("DestroyGameObject", 120f);
     }
 
     void Update()
@@ -46,19 +38,19 @@ public class SimpleSkeletonController : MonoBehaviour
         //    animator.SetBool("sidefix", false);
     }
 
-    void DeactivateGameObject()
-    {
-        gameObject.SetActive(false);
-    }
+    //void DeactivateGameObject()
+    //{
+    //    gameObject.SetActive(false);
+    //}
 
-    void ReactivateGameObject()
-    {
-        gameObject.SetActive(true);
-    }
+    //void ReactivateGameObject()
+    //{
+    //    gameObject.SetActive(true);
+    //}
 
-    void DestroyGameObject()
-    {
-        Destroy(gameObject);
-    }
+    //void DestroyGameObject()
+    //{
+    //    Destroy(gameObject);
+    //}
 }
 

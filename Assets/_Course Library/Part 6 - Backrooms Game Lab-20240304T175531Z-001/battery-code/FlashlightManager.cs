@@ -11,7 +11,6 @@ public enum FlashlightState
     On,
     Dead
 }
-
 [RequireComponent(typeof(AudioSource))]
 public class FlashlightManager : MonoBehaviour
 {
@@ -21,13 +20,15 @@ public class FlashlightManager : MonoBehaviour
     public FlashlightState state;
     private bool flashlightIsOn;
 
-    [SerializeField] private GameObject FlashlightLight;
+    [SerializeField] private Light flashlightLight; // Reference to the Light component
+    [SerializeField] private GameObject FlashlightLightObject; // GameObject that holds the light component
     [SerializeField] private AudioClip FlashlightOn_FX, FlashlightOff_FX;
     private bool triggerPressedLastFrame = false;
 
     void Start()
     {
         currentBattery = startBattery;
+        flashlightLight.intensity = 1.0f; // Set initial light intensity to max
         InvokeRepeating(nameof(LoseBattery), 0, batteryLossTick);
     }
 
@@ -35,7 +36,6 @@ public class FlashlightManager : MonoBehaviour
     {
         InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.triggerButton, out bool isPressed);
 
-        // Toggle flashlight on trigger press, ensuring it only toggles when the press state changes
         if (isPressed && !triggerPressedLastFrame)
         {
             ToggleFlashlight();
@@ -47,8 +47,7 @@ public class FlashlightManager : MonoBehaviour
             TurnOffFlashlight();
         }
 
-        // Update flashlight state visually and functionally
-        FlashlightLight.SetActive(state == FlashlightState.On && flashlightIsOn);
+        FlashlightLightObject.SetActive(state == FlashlightState.On && flashlightIsOn);
     }
 
     public void GainBattery(int amount)
@@ -64,7 +63,11 @@ public class FlashlightManager : MonoBehaviour
 
     public void LoseBattery()
     {
-        if (state == FlashlightState.On && flashlightIsOn) currentBattery--;
+        if (state == FlashlightState.On && flashlightIsOn)
+        {
+            currentBattery--;
+            UpdateLightIntensity();
+        }
         if (currentBattery <= 0)
         {
             TurnOffFlashlight();
@@ -72,16 +75,23 @@ public class FlashlightManager : MonoBehaviour
         }
     }
 
+    private void UpdateLightIntensity()
+    {
+        // Reduce light intensity based on battery level
+        float percent = (float)currentBattery / startBattery;
+        flashlightLight.intensity = percent; // You can modify this calculation as needed
+    }
+
     private void TurnOffFlashlight()
     {
         flashlightIsOn = false;
         GetComponent<AudioSource>().PlayOneShot(FlashlightOff_FX);
-        FlashlightLight.SetActive(false);
+        FlashlightLightObject.SetActive(false);
     }
 
     public void ToggleFlashlight()
     {
-        if (state == FlashlightState.Dead) return; // Do not toggle if the flashlight is dead
+        if (state == FlashlightState.Dead) return;
 
         flashlightIsOn = !flashlightIsOn;
         state = flashlightIsOn ? FlashlightState.On : FlashlightState.Off;
