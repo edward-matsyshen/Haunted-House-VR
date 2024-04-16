@@ -11,6 +11,7 @@ public enum FlashlightState
     On,
     Dead
 }
+
 [RequireComponent(typeof(AudioSource))]
 public class FlashlightManager : MonoBehaviour
 {
@@ -20,15 +21,19 @@ public class FlashlightManager : MonoBehaviour
     public FlashlightState state;
     private bool flashlightIsOn;
 
-    [SerializeField] private Light flashlightLight; // Reference to the Light component
-    [SerializeField] private GameObject FlashlightLightObject; // GameObject that holds the light component
-    [SerializeField] private AudioClip FlashlightOn_FX, FlashlightOff_FX;
+    [SerializeField] private Light flashlightLight; // Adjust this reference to match your actual Light component
+    [SerializeField] private GameObject flashlightLightObject; // Reference to the GameObject that holds the Light component
+    [SerializeField] private AudioClip flashlightOnFX, flashlightOffFX;
     private bool triggerPressedLastFrame = false;
+
+    // Spotlight angle settings
+    [SerializeField] private float maxSpotAngle = 60f; // Maximum angle of the spotlight cone
+    [SerializeField] private float minSpotAngle = 30f; // Minimum angle when the battery is low
 
     void Start()
     {
         currentBattery = startBattery;
-        flashlightLight.intensity = 1.0f; // Set initial light intensity to max
+        flashlightLight.spotAngle = maxSpotAngle; // Initialize with max spot angle
         InvokeRepeating(nameof(LoseBattery), 0, batteryLossTick);
     }
 
@@ -47,7 +52,7 @@ public class FlashlightManager : MonoBehaviour
             TurnOffFlashlight();
         }
 
-        FlashlightLightObject.SetActive(state == FlashlightState.On && flashlightIsOn);
+        flashlightLightObject.SetActive(state == FlashlightState.On && flashlightIsOn);
     }
 
     public void GainBattery(int amount)
@@ -59,6 +64,7 @@ public class FlashlightManager : MonoBehaviour
         }
 
         currentBattery = Mathf.Clamp(currentBattery + amount, 0, startBattery);
+        UpdateSpotlightAngle(); // Update the spotlight angle based on new battery level
     }
 
     public void LoseBattery()
@@ -66,7 +72,7 @@ public class FlashlightManager : MonoBehaviour
         if (state == FlashlightState.On && flashlightIsOn)
         {
             currentBattery--;
-            UpdateLightIntensity();
+            UpdateSpotlightAngle();
         }
         if (currentBattery <= 0)
         {
@@ -75,18 +81,18 @@ public class FlashlightManager : MonoBehaviour
         }
     }
 
-    private void UpdateLightIntensity()
+    private void UpdateSpotlightAngle()
     {
-        // Reduce light intensity based on battery level
-        float percent = (float)currentBattery / startBattery;
-        flashlightLight.intensity = percent; // You can modify this calculation as needed
+        // Dynamically adjust the spotlight angle based on the battery level
+        float percentage = (float)currentBattery / startBattery;
+        flashlightLight.spotAngle = Mathf.Lerp(minSpotAngle, maxSpotAngle, percentage);
     }
 
     private void TurnOffFlashlight()
     {
         flashlightIsOn = false;
-        GetComponent<AudioSource>().PlayOneShot(FlashlightOff_FX);
-        FlashlightLightObject.SetActive(false);
+        GetComponent<AudioSource>().PlayOneShot(flashlightOffFX);
+        flashlightLightObject.SetActive(false);
     }
 
     public void ToggleFlashlight()
@@ -98,11 +104,11 @@ public class FlashlightManager : MonoBehaviour
 
         if (flashlightIsOn)
         {
-            if (FlashlightOn_FX != null) GetComponent<AudioSource>().PlayOneShot(FlashlightOn_FX);
+            if (flashlightOnFX != null) GetComponent<AudioSource>().PlayOneShot(flashlightOnFX);
         }
         else
         {
-            if (FlashlightOff_FX != null) GetComponent<AudioSource>().PlayOneShot(FlashlightOff_FX);
+            if (flashlightOffFX != null) GetComponent<AudioSource>().PlayOneShot(flashlightOffFX);
         }
     }
 }
