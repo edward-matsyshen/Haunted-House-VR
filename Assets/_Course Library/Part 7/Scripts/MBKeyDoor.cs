@@ -1,11 +1,12 @@
 using UnityEngine.XR;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections.Generic;
 
 public class MBKeyDoor : MonoBehaviour
 {
     [Header("Attributes")]
-    public string keyName = "";
+    public List<string> keyNames = new List<string>();  // Change to a list of keys
 
     [Header("References")]
     public Animation Door;
@@ -54,12 +55,18 @@ public class MBKeyDoor : MonoBehaviour
         string keyToRemove = null;
         foreach (string key in km.keysInInventory)
         {
-            if (key.Trim().ToLower() == keyName.Trim().ToLower())
+            // Check if any key in inventory matches any of the allowed key names for this door
+            foreach (string allowedKey in keyNames)
             {
-                OpenDoor();
-                keyToRemove = key; // Mark the key for removal
-                break; // Exit the loop once the key is found and marked for removal
+                if (key.Trim().ToLower() == allowedKey.Trim().ToLower())
+                {
+                    OpenDoor();
+                    keyToRemove = key; // Mark the key for removal
+                    break; // Exit the inner loop once the key is found
+                }
             }
+            if (keyToRemove != null)
+                break; // Exit the outer loop if a key was marked for removal
         }
 
         if (keyToRemove != null)

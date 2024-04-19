@@ -33,7 +33,8 @@ Material:
         m_Scale: {x: 1, y: 1.5}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _SpecularHighlights: 1
     m_Colors:
     - _BaseColor: {r: 0.5660378, g: 0.40081003, b: 0.29636884, a: 1}
     - _Color: {r: 0.5660378, g: 0.40081, b: 0.2963688, a: 1}
