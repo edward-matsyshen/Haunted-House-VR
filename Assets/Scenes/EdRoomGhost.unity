@@ -93339,8 +93339,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294901853
-  m_fontColor: {r: 0.3647704, g: 0, b: 1, a: 1}
+    rgba: 4278255610
+  m_fontColor: {r: 0.98061097, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -98096,7 +98096,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 89.623, y: 86.257, z: 176.257}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22.977, y: 59.771}
+  m_AnchoredPosition: {x: 22.978, y: 59.611}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1534487350
@@ -98149,7 +98149,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 55684a3c6c4fd554789eceaeb1371dd4, type: 2}
+  - {fileID: 2100000, guid: cb442cc5a584afa4ebfb64edebcc94c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112345,7 +112345,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cb442cc5a584afa4ebfb64edebcc94c1, type: 2}
+  - {fileID: 2100000, guid: 55684a3c6c4fd554789eceaeb1371dd4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
