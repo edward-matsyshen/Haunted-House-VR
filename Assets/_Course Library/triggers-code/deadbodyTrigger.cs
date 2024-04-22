@@ -7,8 +7,10 @@ public class deadbodyTrigger : MonoBehaviour
 {
     public Animation bodyAnimation;
     public AudioSource deadBodyFloatUpAudio;
+    public AudioSource additionalAudio; // New field for the optional additional audio track
     public Transform playerTransform; // Assign the player's transform in the inspector
     public float triggerDistance = 1.0f; // The distance within which the animation should trigger
+    public float delayBeforeTrigger = 2.0f; // Delay before triggering animation and audio
 
     private void Update()
     {
@@ -24,13 +26,13 @@ public class deadbodyTrigger : MonoBehaviour
 
     private IEnumerator DelayedTriggerAnimationAndSound()
     {
-        // Wait for 2 seconds
-        yield return new WaitForSeconds(2);
+        // Wait for a specific delay before triggering
+        yield return new WaitForSeconds(delayBeforeTrigger);
 
         // Play the animation
         bodyAnimation.Play();
 
-        // Check if the audio source is available and an audio clip is assigned
+        // Play the primary audio if available
         if (deadBodyFloatUpAudio != null && deadBodyFloatUpAudio.clip != null)
         {
             deadBodyFloatUpAudio.Play();
@@ -38,6 +40,16 @@ public class deadbodyTrigger : MonoBehaviour
         else
         {
             Debug.LogWarning("Dead body audio source is missing or no audio clip is assigned.", this);
+        }
+
+        // Optionally, play the additional audio if available
+        if (additionalAudio != null && additionalAudio.clip != null)
+        {
+            additionalAudio.Play();
+        }
+        else if (additionalAudio != null)
+        {
+            Debug.LogWarning("Additional audio source is missing or no audio clip is assigned.", this);
         }
 
         // Optionally, disable the game object after triggering
