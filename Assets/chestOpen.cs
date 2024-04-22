@@ -6,15 +6,17 @@ using System.Collections.Generic;
 public class chestOpen : MonoBehaviour
 {
     [Header("Attributes")]
-    public List<string> requiredKeys = new List<string>();  // List of key names required to trigger the chest
+    public List<string> requiredKeys = new List<string>(); // List of key names required to trigger the chest
 
     [Header("References")]
     public Animation chestAnimation;
     public AudioSource chestOpenSound;
     public AudioSource chestLockedSound;
+    public GameObject HoverIconWithoutKey; // Hover object when the key is not in inventory
+    public GameObject HoverIconWithKey;   // Hover object when the key is in inventory
 
     private KeyManager keyManager; // Reference to the KeyManager component
-    private bool isChestOpen = false; // Track whether the chest has been opened
+    private bool isChestOpen = false; // Track whether the chest is open
     private bool playerNearChest = false; // Detect if player is near the chest
 
     private void Start()
@@ -27,6 +29,7 @@ public class chestOpen : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearChest = true; // Set flag to true when the player is near the chest
+            UpdateHoverObjects(); // Update hover objects based on player's key possession
         }
     }
 
@@ -35,6 +38,7 @@ public class chestOpen : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearChest = false; // Reset flag when the player leaves the chest area
+            UpdateHoverObjects(); // Ensure hover objects are inactive
         }
     }
 
@@ -54,17 +58,12 @@ public class chestOpen : MonoBehaviour
         string keyToRemove = null;
         foreach (string key in keyManager.keysInInventory)
         {
-            foreach (string requiredKey in requiredKeys)
+            if (requiredKeys.Exists(rk => rk.Trim().ToLower() == key.Trim().ToLower()))
             {
-                if (key.Trim().ToLower() == requiredKey.Trim().ToLower())
-                {
-                    OpenChest();
-                    keyToRemove = key; // Remember the key to remove after opening
-                    break;
-                }
+                OpenChest();
+                keyToRemove = key; // Remember the key to remove after opening
+                break;
             }
-            if (keyToRemove != null)
-                break; // Break if the key is found
         }
 
         if (keyToRemove != null)
@@ -80,8 +79,27 @@ public class chestOpen : MonoBehaviour
     private void OpenChest()
     {
         GetComponent<BoxCollider>().enabled = false; // Disable collider to prevent retriggering
-        chestAnimation.Play(); // Trigger chest opening animation
-        chestOpenSound.Play(); // Play the chest opening sound
+        chestAnimation.Play(); // Play chest opening animation
+        chestOpenSound.Play(); // Play chest opening sound
         isChestOpen = true; // Mark the chest as open
+        UpdateHoverObjects(); // Ensure hover objects are deactivated after opening
+    }
+
+    private void UpdateHoverObjects()
+    {
+        if (playerNearChest && !isChestOpen)
+        {
+            bool hasRequiredKey = keyManager.keysInInventory.Exists(k => requiredKeys.Exists(rk => rk.Trim().ToLower() == k.Trim().ToLower()));
+
+            // Set the appropriate hover object based on whether the player has the key
+            HoverIconWithoutKey.SetActive(!hasRequiredKey);
+            HoverIconWithKey.SetActive(hasRequiredKey);
+        }
+        else
+        {
+            // Ensure both hover objects are inactive when the chest is open
+            HoverIconWithoutKey.SetActive(false);
+            HoverIconWithKey.SetActive(false);
+        }
     }
 }
