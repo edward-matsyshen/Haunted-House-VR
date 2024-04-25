@@ -6,9 +6,9 @@ using UnityEngine.XR;
 
 public class KeypadController : MonoBehaviour
 {
-    public DoorController door;
-    // Replace the single password string with a list of passwords
-    public List<string> validPasswords = new List<string>();
+    // Dictionary to map door names to their corresponding passwords
+    public Dictionary<string, string> doorNameToPassword = new Dictionary<string, string>();
+    public List<DoorController> doors; // List of doors
     public int passwordLimit;
     public Text passwordText;
 
@@ -21,8 +21,11 @@ public class KeypadController : MonoBehaviour
     {
         passwordText.text = "";
 
-        // Initialize the validPasswords list here, if needed, or directly in the Unity Editor
-        // Example: validPasswords.AddRange(new string[] {"password1", "password2", "password3"});
+        // Initialize the dictionary to map door names to their passwords
+        // Example: doorNameToPassword.Add("Door1", "password1");
+        //          doorNameToPassword.Add("Door2", "password2");
+        doorNameToPassword.Add("DoorMesh1", "13");
+        doorNameToPassword.Add("DoorMesh2", "101");
     }
 
     public void PasswordEntry(string number)
@@ -38,7 +41,7 @@ public class KeypadController : MonoBehaviour
             return;
         }
 
-        int length = passwordText.text.ToString().Length;
+        int length = passwordText.text.Length;
         if (length < passwordLimit)
         {
             passwordText.text += number;
@@ -53,17 +56,29 @@ public class KeypadController : MonoBehaviour
 
     private void Enter()
     {
-        // Check if the entered password matches any in the validPasswords list
-        if (validPasswords.Contains(passwordText.text))
+        string enteredPassword = passwordText.text;
+
+        // Check if the entered password matches any value in the dictionary
+        bool doorUnlocked = false;
+        foreach (var door in doors)
         {
-            door.lockedByPassword = false;
+            string doorName = door.gameObject.name;
+            if (doorNameToPassword.ContainsKey(doorName) &&
+                doorNameToPassword[doorName].Equals(enteredPassword, System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                door.lockedByPassword = false; // Unlock the door
+                door.OpenUp(); // Open the door
+                doorUnlocked = true;
 
-            if (audioSource != null)
-                audioSource.PlayOneShot(correctSound);
+                if (audioSource != null)
+                    audioSource.PlayOneShot(correctSound);
 
-            passwordText.color = Color.green;
+                passwordText.color = Color.green;
+                break;
+            }
         }
-        else
+
+        if (!doorUnlocked)
         {
             if (audioSource != null)
                 audioSource.PlayOneShot(wrongSound);
@@ -80,6 +95,3 @@ public class KeypadController : MonoBehaviour
         Clear();
     }
 }
-
-
-
