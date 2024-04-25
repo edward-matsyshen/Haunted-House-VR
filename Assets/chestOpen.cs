@@ -46,9 +46,21 @@ public class chestOpen : MonoBehaviour
     {
         if (playerNearChest && !isChestOpen)
         {
+            // Check if the chest requires any keys
+            bool hasRequiredKeys = requiredKeys.Count > 0;
+
             if (InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed) && isPressed)
             {
-                CheckForRequiredKey();
+                if (hasRequiredKeys)
+                {
+                    // If keys are required, check for required keys
+                    CheckForRequiredKey();
+                }
+                else
+                {
+                    // If no keys are required, open the chest
+                    OpenChest();
+                }
             }
         }
     }
@@ -89,11 +101,25 @@ public class chestOpen : MonoBehaviour
     {
         if (playerNearChest && !isChestOpen)
         {
-            bool hasRequiredKey = keyManager.keysInInventory.Exists(k => requiredKeys.Exists(rk => rk.Trim().ToLower() == k.Trim().ToLower()));
+            // Check if the chest requires any keys
+            bool hasRequiredKeys = requiredKeys.Count > 0;
 
-            // Set the appropriate hover object based on whether the player has the key
-            HoverIconWithoutKey.SetActive(!hasRequiredKey);
-            HoverIconWithKey.SetActive(hasRequiredKey);
+            if (hasRequiredKeys)
+            {
+                bool hasRequiredKey = keyManager.keysInInventory.Exists(
+                    k => requiredKeys.Exists(rk => rk.Trim().ToLower() == k.Trim().ToLower())
+                );
+
+                // Set hover objects based on whether the player has the required key
+                HoverIconWithoutKey.SetActive(!hasRequiredKey);
+                HoverIconWithKey.SetActive(hasRequiredKey);
+            }
+            else
+            {
+                // If no keys are required, always show HoverIconWithKey
+                HoverIconWithoutKey.SetActive(false);
+                HoverIconWithKey.SetActive(true);
+            }
         }
         else
         {
