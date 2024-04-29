@@ -6,8 +6,8 @@ using UnityEngine.XR;
 
 public class KeypadController : MonoBehaviour
 {
-    // Dictionary to map door names to their corresponding passwords
-    public Dictionary<string, string> doorNameToPassword = new Dictionary<string, string>();
+    // Dictionary to map door names to lists of corresponding passwords
+    public Dictionary<string, List<string>> doorNameToPasswords = new Dictionary<string, List<string>>();
     public List<DoorController> doors; // List of doors
     public int passwordLimit;
     public Text passwordText;
@@ -21,11 +21,17 @@ public class KeypadController : MonoBehaviour
     {
         passwordText.text = "";
 
-        // Initialize the dictionary to map door names to their passwords
-        // Example: doorNameToPassword.Add("Door1", "password1");
-        //          doorNameToPassword.Add("Door2", "password2");
-        doorNameToPassword.Add("DoorMesh1", "13");
-        doorNameToPassword.Add("DoorMesh2", "101");
+        // Initialize the dictionary with lists of passwords
+        // Example: doorNameToPasswords.Add("DoorMesh1", new List<string> { "13" });
+        //          doorNameToPasswords.Add("GlassDoorMesh", new List<string> { "179", "197", "719" });
+
+        doorNameToPasswords.Add("DoorMesh1", new List<string> { "13" });
+
+        doorNameToPasswords.Add("DoorMesh2", new List<string> { "284" });
+
+        doorNameToPasswords.Add("GlassDoorMesh", new List<string> { "179", "197", "719", "791", "917", "971" });
+
+        doorNameToPasswords.Add("DoorMesh4", new List<string> { "163", "136", "316", "361", "613", "631" });
     }
 
     public void PasswordEntry(string number)
@@ -63,18 +69,21 @@ public class KeypadController : MonoBehaviour
         foreach (var door in doors)
         {
             string doorName = door.gameObject.name;
-            if (doorNameToPassword.ContainsKey(doorName) &&
-                doorNameToPassword[doorName].Equals(enteredPassword, System.StringComparison.InvariantCultureIgnoreCase))
+            if (doorNameToPasswords.ContainsKey(doorName))
             {
-                door.lockedByPassword = false; // Unlock the door
-                door.OpenUp(); // Open the door
-                doorUnlocked = true;
+                List<string> passwords = doorNameToPasswords[doorName];
+                if (passwords.Contains(enteredPassword))
+                {
+                    door.lockedByPassword = false; // Unlock the door
+                    door.OpenUp(); // Open the door
+                    doorUnlocked = true;
 
-                if (audioSource != null)
-                    audioSource.PlayOneShot(correctSound);
+                    if (audioSource != null)
+                        audioSource.PlayOneShot(correctSound);
 
-                passwordText.color = Color.green;
-                break;
+                    passwordText.color = Color.green;
+                    break;
+                }
             }
         }
 
