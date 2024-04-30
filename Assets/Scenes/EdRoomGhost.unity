@@ -30185,6 +30185,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrayKey (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 78176340259267445, guid: cb7943adeec76f8459a377e5ac5287f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7315829676918876474, guid: cb7943adeec76f8459a377e5ac5287f3,
         type: 3}
       propertyPath: m_LocalPosition.x
