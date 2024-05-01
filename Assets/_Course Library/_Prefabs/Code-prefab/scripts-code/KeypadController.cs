@@ -25,9 +25,9 @@ public class KeypadController : MonoBehaviour
         // Example: doorNameToPasswords.Add("DoorMesh1", new List<string> { "13" });
         //          doorNameToPasswords.Add("GlassDoorMesh", new List<string> { "179", "197", "719" });
 
-        doorNameToPasswords.Add("DoorMesh1", new List<string> { "13" });
+        doorNameToPasswords.Add("DoorMesh1", new List<string> { "888", "13" });
 
-        doorNameToPasswords.Add("DoorMesh2", new List<string> { "284" });
+        doorNameToPasswords.Add("DoorMesh2", new List<string> { "888", "284" });
 
         doorNameToPasswords.Add("TutorailDoorMesh01", new List<string> { "888", "84", "209" });
 
@@ -37,13 +37,18 @@ public class KeypadController : MonoBehaviour
 
         doorNameToPasswords.Add("TutorailDoorMesh04", new List<string> { "888", "13" });
 
+
+        doorNameToPasswords.Add("IndoorDoorMesh01", new List<string> { "888", "742", "724", "472", "427", "274", "247" });
+
+        doorNameToPasswords.Add("PuzzleRoomDoorMesh01", new List<string> { "888", "589", "598", "859", "895", "958", "985" });
+
         //all varations:
 
         doorNameToPasswords.Add("OutsideDoorMesh", new List<string> { "888", "8367", "8376", "8637", "8673", "8736", "8763", "3867", "3876", "3687", "3678", "3786", "3768", "6837", "6873", "6387", "6378", "6783", "6738", "7836", "7863", "7386", "7368", "7683", "7638" });
 
         //all varations:
 
-        doorNameToPasswords.Add("DoorMesh4", new List<string> { "163", "136", "316", "361", "613", "631" });
+        doorNameToPasswords.Add("DoorMesh4", new List<string> { "888", "163", "136", "316", "361", "613", "631" });
     }
 
     public void PasswordEntry(string number)

@@ -30025,7 +30025,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf739253edb236c45829c299c2687521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doors: []
+  doors:
+  - {fileID: 706886225}
   passwordLimit: 4
   passwordText: {fileID: 441333681}
   audioSource: {fileID: 1973283108}
@@ -55692,7 +55693,7 @@ GameObject:
   - component: {fileID: 706886226}
   - component: {fileID: 706886225}
   m_Layer: 0
-  m_Name: DoorMesh
+  m_Name: IndoorDoorMesh01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86703,7 +86704,7 @@ Transform:
   m_GameObject: {fileID: 1019938391}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7036089, z: -0, w: 0.7105875}
-  m_LocalPosition: {x: 4.85, y: -84.39, z: 5.69}
+  m_LocalPosition: {x: 4.85, y: 2.6, z: 5.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -109962,7 +109963,7 @@ Transform:
   m_GameObject: {fileID: 1287978264}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.024175532, z: -0, w: 0.99970776}
-  m_LocalPosition: {x: 2.92, y: 0.12, z: 2.89}
+  m_LocalPosition: {x: 3.105, y: 0.12, z: 6.711}
   m_LocalScale: {x: 0.24595231, y: 1, z: 0.33643067}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121966,6 +121967,16 @@ PrefabInstance:
       propertyPath: passwordLimit
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7799646515135638243, guid: a8ee8a0a877c4e64fa1915f8445c3110,
+        type: 3}
+      propertyPath: doors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799646515135638243, guid: a8ee8a0a877c4e64fa1915f8445c3110,
+        type: 3}
+      propertyPath: doors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1797074334}
     - target: {fileID: 7799646515135638243, guid: a8ee8a0a877c4e64fa1915f8445c3110,
         type: 3}
       propertyPath: validPasswords.Array.size
@@ -142474,7 +142485,7 @@ GameObject:
   - component: {fileID: 1797074336}
   - component: {fileID: 1797074334}
   m_Layer: 0
-  m_Name: DoorMesh
+  m_Name: PuzzleRoomDoorMesh01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153265,7 +153276,7 @@ GameObject:
   - component: {fileID: 1977394022}
   - component: {fileID: 1977394021}
   m_Layer: 0
-  m_Name: TriggerDoor
+  m_Name: PuzzleRoomTriggerDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
