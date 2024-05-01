@@ -31,6 +31,14 @@ public class KeypadController : MonoBehaviour
 
         doorNameToPasswords.Add("GlassDoorMesh", new List<string> { "179", "197", "719", "791", "917", "971" });
 
+        doorNameToPasswords.Add("TutorailDoorMesh01", new List<string> { "888", "84", "209" });
+
+        doorNameToPasswords.Add("TutorailDoorMesh02", new List<string> { "888", "304" });
+
+        doorNameToPasswords.Add("TutorailDoorMesh03", new List<string> { "888", "532" });
+
+        doorNameToPasswords.Add("TutorailDoorMesh04", new List<string> { "888", "13" });
+
         doorNameToPasswords.Add("DoorMesh4", new List<string> { "163", "136", "316", "361", "613", "631" });
     }
 
