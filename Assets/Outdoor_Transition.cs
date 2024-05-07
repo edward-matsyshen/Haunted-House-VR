@@ -6,10 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class Outdoor_Transition : MonoBehaviour
 {
     public Transform targetTeleportLocation;
-    public float teleportDelay = 2.0f;
+    public float teleportDelay = 0.0f;
     private ActionBasedContinuousMoveProvider moveProvider;
     // Reference to the directional light
-    public Light directionalLight;
     private bool isTeleporting = false;  // To prevent multiple teleportations simultaneously
 
     private void OnTriggerEnter(Collider other)
@@ -24,17 +23,6 @@ public class Outdoor_Transition : MonoBehaviour
             }
 
             StartCoroutine(TeleportAfterDelay(other.gameObject));
-
-            if (directionalLight != null)
-            {
-                // Turn off the directional light
-                directionalLight.enabled = false;
-                Debug.Log("Directional light turned off.");
-            }
-            else
-            {
-                Debug.LogWarning("No directional light found in the scene.");
-            }
         }
     }
 

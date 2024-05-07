@@ -499,7 +499,7 @@ namespace CinematicPerspectiveEditor
             EditorGUI.BeginChangeCheck();
 
             Handles.color = Color.white;
-            var forRange2 = Handles.FreeMoveHandle(rangePosition2, Quaternion.LookRotation(rangePosition2 - rig.transform.position, Vector3.up), .05f * rig.range, Vector3.one, Handles.SphereHandleCap);
+            var fmh_502_68_638505814844122983 = Quaternion.LookRotation(rangePosition2 - rig.transform.position, Vector3.up); var forRange2 = Handles.FreeMoveHandle(rangePosition2, .05f * rig.range, Vector3.one, Handles.SphereHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 var range2 = Vector3.Distance(forRange2, rig.transform.position);
@@ -514,7 +514,7 @@ namespace CinematicPerspectiveEditor
             {
                 var dollyMode = overrideMode ? rig.dollyMode : rig.cinematicTakes.dollyMode;
                 Handles.color = Color.red;
-                dollyMode.destination = Handles.FreeMoveHandle(rig.transform.position + rig.cameraPositionOffset + dollyMode.destination, Quaternion.identity, 1f, Vector3.one, Handles.SphereHandleCap) - rig.transform.position - rig.cameraPositionOffset;
+                var fmh_517_139_638505814844129114 = Quaternion.identity; dollyMode.destination = Handles.FreeMoveHandle(rig.transform.position + rig.cameraPositionOffset + dollyMode.destination, 1f, Vector3.one, Handles.SphereHandleCap) - rig.transform.position - rig.cameraPositionOffset;
                 Handles.DrawAAPolyLine(rig.transform.position + rig.cameraPositionOffset, rig.transform.position + rig.cameraPositionOffset + dollyMode.destination);
             }
         }

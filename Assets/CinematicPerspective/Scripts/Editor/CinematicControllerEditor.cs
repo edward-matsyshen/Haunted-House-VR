@@ -105,7 +105,7 @@ namespace CinematicPerspectiveEditor
             var cursor = CinematicTakesEditor.cursor;
             Handles.color = Color.green;
             var size = HandleUtility.GetHandleSize(cursor) * .1f;
-            Handles.FreeMoveHandle(cursor, Quaternion.identity, size, Vector3.one * .1f, Handles.SphereHandleCap);
+            var fmh_108_44_638505814843321776 = Quaternion.identity; Handles.FreeMoveHandle(cursor, size, Vector3.one * .1f, Handles.SphereHandleCap);
             if (Event.current.type == EventType.MouseUp && Event.current.button == 0)
             {
                 Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
