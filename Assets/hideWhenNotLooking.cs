@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class hideWhenNotLooking : MonoBehaviour
 {
-    public float hideDistance = 10.0f;
+    public Vector3 translationVector = new Vector3(1f, 0f, 0f); // Direction and speed of movement
+    public float distanceToDisappear = 5f; // Distance after which the object will disappear
+    public float triggerDistance = 3f; // Distance at which the object starts moving
+
+    private float traveledDistance = 0f;
+    private bool startMoving = false; // Flag to control when the object starts moving
     private Renderer objectRenderer;
     private Camera mainCamera;
 
@@ -19,32 +24,29 @@ public class hideWhenNotLooking : MonoBehaviour
 
     void Update()
     {
-        // Check if the main camera is within the hide distance
-        if (mainCamera != null && Vector3.Distance(transform.position, mainCamera.transform.position) < hideDistance)
+        // Check if the main camera is within the trigger distance
+        if (mainCamera != null && Vector3.Distance(transform.position, mainCamera.transform.position) < triggerDistance)
         {
-            // Check if the object is visible to the main camera
-            if (!IsVisibleFrom(mainCamera, objectRenderer))
+            startMoving = true;
+        }
+
+        // If flagged to start moving
+        if (startMoving)
+        {
+            Vector3 movement = translationVector * Time.deltaTime;
+            transform.Translate(movement);
+            traveledDistance += movement.magnitude;
+
+            if (traveledDistance >= distanceToDisappear)
             {
-                // If the object is not visible, hide or deactivate it
+                // If the object has moved the required distance, hide or deactivate it
                 gameObject.SetActive(false); // Alternatively, you can use objectRenderer.enabled = false;
-            }
-            else
-            {
-                // If the object is visible, ensure it's active or visible
-                gameObject.SetActive(true); // Alternatively, you can use objectRenderer.enabled = true;
             }
         }
         else
         {
-            // If the main camera is outside of the hide distance, ensure the object is active
-            gameObject.SetActive(true);
+            // If the main camera is outside of the trigger distance, ensure the object is active
+            gameObject.SetActive(true); // Alternatively, you can use objectRenderer.enabled = true;
         }
-    }
-
-    // Function to check if the object is visible to the camera
-    bool IsVisibleFrom(Camera camera, Renderer renderer)
-    {
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
-        return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
     }
 }

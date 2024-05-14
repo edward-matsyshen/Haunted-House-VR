@@ -4,38 +4,49 @@ using UnityEngine;
 
 public class ObjectMoveAndDisappear : MonoBehaviour
 {
-    public Vector3 translationVector = new Vector3(0f, 0f, 1f); // Direction and speed of movement
-    public float distanceToDisappear = 2f; // Distance after which the object will disappear
+    public Vector3 translationVector = new Vector3(1f, 0f, 0f); 
+    public float distanceToDisappear = 5f;
+    public float triggerDistance = 3f; 
+
     private float traveledDistance = 0f;
-    private bool startMoving = false; // Flag to control when the object starts moving
+    private bool startMoving = false; 
+    private Renderer objectRenderer;
+    private Camera mainCamera;
+
+    void Start()
+    {
+        
+        objectRenderer = GetComponent<Renderer>();
+
+        
+        mainCamera = Camera.main;
+    }
 
     void Update()
     {
-        // Check if the object should start moving
+        // Check if the main camera is within the distance
+        if (mainCamera != null && Vector3.Distance(transform.position, mainCamera.transform.position) < triggerDistance)
+        {
+            startMoving = true;
+        }
+
+        // If flagged to start moving
         if (startMoving)
         {
-            // Calculate movement for this frame based on frame time and translation vector
             Vector3 movement = translationVector * Time.deltaTime;
             transform.Translate(movement);
-
-            // Update the total traveled distance
             traveledDistance += movement.magnitude;
 
-            // Check if the object has moved the required distance
             if (traveledDistance >= distanceToDisappear)
             {
-                // Deactivate the object (you can also use Destroy(gameObject) if you want to completely remove it)
-                gameObject.SetActive(false);
+                
+                gameObject.SetActive(false); 
             }
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // Check if the collider is the player
-        if (other.CompareTag("MainCamera"))
+        else
         {
-            startMoving = true; // Set the flag to start moving the object
+            
+            gameObject.SetActive(true); 
         }
     }
 }
