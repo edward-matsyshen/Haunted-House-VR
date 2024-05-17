@@ -21,20 +21,23 @@ public class FlashlightManager : MonoBehaviour
     public FlashlightState state;
     private bool flashlightIsOn;
 
-    [SerializeField] private Light flashlightLight; // Adjust this reference to match your actual Light component
-    [SerializeField] private GameObject flashlightLightObject; // Reference to the GameObject that holds the Light component
+    [SerializeField] private Light flashlightLight;
+    [SerializeField] private GameObject flashlightLightObject;
     [SerializeField] private AudioClip flashlightOnFX, flashlightOffFX;
     private bool triggerPressedLastFrame = false;
 
-    // Spotlight angle settings
-    [SerializeField] private float maxSpotAngle = 60f; // Maximum angle of the spotlight cone
-    [SerializeField] private float minSpotAngle = 30f; // Minimum angle when the battery is low
+    [SerializeField] private float maxSpotAngle = 60f;
+    [SerializeField] private float minSpotAngle = 30f;
+
+    private float randomOffTimer;
+    private float nextRandomOffTime;
 
     void Start()
     {
         currentBattery = startBattery;
-        flashlightLight.spotAngle = maxSpotAngle; // Initialize with max spot angle
+        flashlightLight.spotAngle = maxSpotAngle;
         InvokeRepeating(nameof(LoseBattery), 0, batteryLossTick);
+        SetNextRandomOffTime();
     }
 
     void Update()
@@ -53,18 +56,39 @@ public class FlashlightManager : MonoBehaviour
         }
 
         flashlightLightObject.SetActive(state == FlashlightState.On && flashlightIsOn);
+
+        if (Time.time > nextRandomOffTime && flashlightIsOn)
+        {
+            StartCoroutine(RandomlyTurnOff());
+        }
+    }
+
+    private void SetNextRandomOffTime()
+    {
+        nextRandomOffTime = Time.time + 300f + Random.Range(0f, 120f); // 5 minutes plus a random extra time
+    }
+
+    private IEnumerator RandomlyTurnOff()
+    {
+        TurnOffFlashlight();
+        yield return new WaitForSeconds(Random.Range(3f, 7f)); // Turn off for a random time between 2 to 5 seconds
+        if (currentBattery > 0 && state != FlashlightState.Dead)
+        {
+            ToggleFlashlight(); // Turn it back on if still possible
+        }
+        SetNextRandomOffTime(); // Reset the timer for next random off
     }
 
     public void GainBattery(int amount)
     {
         if (state == FlashlightState.Dead && amount > 0)
         {
-            flashlightIsOn = false; // Ensure flashlight is initially off when battery is regained
+            flashlightIsOn = false;
             state = FlashlightState.Off;
         }
 
         currentBattery = Mathf.Clamp(currentBattery + amount, 0, startBattery);
-        UpdateSpotlightAngle(); // Update the spotlight angle based on new battery level
+        UpdateSpotlightAngle();
     }
 
     public void LoseBattery()
@@ -83,7 +107,6 @@ public class FlashlightManager : MonoBehaviour
 
     private void UpdateSpotlightAngle()
     {
-        // Dynamically adjust the spotlight angle based on the battery level
         float percentage = (float)currentBattery / startBattery;
         flashlightLight.spotAngle = Mathf.Lerp(minSpotAngle, maxSpotAngle, percentage);
     }
