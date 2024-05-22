@@ -9,6 +9,7 @@ TagManager:
   - screen
   - displayText
   - PlayerHand
+  - lightbox
   layers:
   - Default
   - TransparentFX
