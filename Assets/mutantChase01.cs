@@ -13,6 +13,13 @@ public class mutantChase01 : MonoBehaviour
     private bool isChasing = false;
     private float chaseTimer = 0;
 
+    public Transform targetTeleportLocation; // Destination for teleporting the player
+    public float teleportDelay = 0.0f; // Delay before teleporting
+    private bool isTeleporting = false; // To prevent multiple teleportations simultaneously
+
+    public AudioSource audioSource; // Reference to the AudioSource component
+    public AudioClip triggerSound; // Audio clip to play on trigger
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();  // Initialize the NavMeshAgent component
@@ -84,5 +91,30 @@ public class mutantChase01 : MonoBehaviour
     {
         isChasing = false;
         agent.isStopped = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && !isTeleporting)
+        {
+            audioSource.PlayOneShot(triggerSound);  // Play the audio clip
+            StartCoroutine(TeleportPlayerAfterDelay(other.gameObject));
+        }
+    }
+
+    private IEnumerator TeleportPlayerAfterDelay(GameObject player)
+    {
+        isTeleporting = true;
+        agent.isStopped = true; // Stop the agent
+
+        // Wait for the specified delay
+        yield return new WaitForSeconds(teleportDelay);
+
+        // Teleport the player to the target location
+        player.transform.position = targetTeleportLocation.position;
+        player.transform.rotation = targetTeleportLocation.rotation;
+
+        agent.isStopped = false; // Resume agent movement
+        isTeleporting = false;
     }
 }

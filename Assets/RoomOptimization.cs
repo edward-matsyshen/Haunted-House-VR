@@ -4,27 +4,48 @@ using UnityEngine;
 
 public class RoomOptimization : MonoBehaviour
 {
-    public DoorController doorController; // Reference to the DoorController
-    public GameObject nextRoomSection; // Assign the next room section that should be activated
+    public GameObject[] nextRoomSections; // Assign the next room sections that should be activated
+    public GameObject[] previousRoomSections; // Assign the previous room sections that should be deactivated
 
     void Start()
     {
-        if (nextRoomSection != null)
-            nextRoomSection.SetActive(false); // Ensure the next room section is disabled on game start
+        // Ensure all next room sections are disabled and all previous room sections are enabled at game start
+        if (nextRoomSections.Length > 0)
+        {
+            foreach (GameObject room in nextRoomSections)
+            {
+                if (room != null)
+                    room.SetActive(false); // Disable each room in nextRoomSections
+            }
+        }
 
-        if (doorController != null)
-            doorController.OnDoorUnlocked += ActivateNextRoomSection; // Subscribe to the OnDoorUnlocked event
+        if (previousRoomSections.Length > 0)
+        {
+            foreach (GameObject room in previousRoomSections)
+            {
+                if (room != null)
+                    room.SetActive(true); // Enable each room in previousRoomSections
+            }
+        }
     }
 
-    private void OnDestroy()
+    private void OnTriggerEnter(Collider other)
     {
-        if (doorController != null)
-            doorController.OnDoorUnlocked -= ActivateNextRoomSection; // Unsubscribe to prevent memory leaks
-    }
+        // Check if the collider belongs to the player or relevant entity
+        if (other.CompareTag("Player"))
+        {
+            // Activate all next rooms and deactivate all previous rooms when the player enters the trigger zone
+            foreach (GameObject room in nextRoomSections)
+            {
+                if (room != null)
+                    room.SetActive(true);
+            }
 
-    private void ActivateNextRoomSection()
-    {
-        if (nextRoomSection != null)
-            nextRoomSection.SetActive(true); // Activate the next room section when the door is unlocked
+            foreach (GameObject room in previousRoomSections)
+            {
+                if (room != null)
+                    room.SetActive(false);
+            }
+        }
     }
 }

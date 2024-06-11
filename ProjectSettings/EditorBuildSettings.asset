@@ -5,11 +5,45 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ed=Room.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/DEMO.unity
+    guid: cafba039749bc014ca079061be96570f
+  - enabled: 0
+    path: Assets/Scenes/BklOpt01.unity
+    guid: 1af69ab3eee1c554b881e26fd058c751
+  - enabled: 1
+    path: Assets/Scenes/1 Start Scene.unity
+    guid: bdf22161af52d1342a02f9784a576628
+  - enabled: 1
+    path: Assets/Scenes/2 BklOpt02.unity
+    guid: 04877fd265bb1fc46adbd50163ac5da4
+  - enabled: 1
+    path: Assets/Scenes/3 Optomized.unity
+    guid: ef4027c94b40a1048bac60c3a2ea5c63
+  - enabled: 1
+    path: Assets/Scenes/4 EdRoomGhost.unity
+    guid: 2fe7123029d92c7448c6adc9e1be8b5a
+  - enabled: 1
+    path: Assets/Scenes/5 InsideHouse.unity
+    guid: 1994dc6b3c3302241ac48b721354e500
+  - enabled: 1
+    path: Assets/Scenes/6 Boss.unity
+    guid: 8b2d446feecc3e54a96dfcfc05c4c9cb
+  - enabled: 0
+    path: Assets/Scenes/JoeDEMO.unity
+    guid: a4a037f11b0f20e4f9d8c07ad5c9d787
+  - enabled: 0
+    path: Assets/Scenes/OutsideScene.unity
+    guid: cebe2b426847e2549b4f140053d078a0
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: ed72be55522c8448bae8b0d66fa21adf,
+      type: 2}
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 344df9625137e5446871ead0644a4f1f,
+      type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: b3f6b23e48254b742a7931a4dd915055,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ad4050bc0deda4e238354e959df0f1f4,
       type: 2}

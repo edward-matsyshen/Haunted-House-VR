@@ -23,9 +23,9 @@ public class PlayerAim : MonoBehaviour
             if (distance <= 3f)
             {
                 var rightHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-                rightHandDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool aButtonPressed);
+                rightHandDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool gripPressed);
 
-                if (aButtonPressed)
+                if (gripPressed)
                 {
                     // Update the last button press time
                     lastButtonPressTime = Time.time;

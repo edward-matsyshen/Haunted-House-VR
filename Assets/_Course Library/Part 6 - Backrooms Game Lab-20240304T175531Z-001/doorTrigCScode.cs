@@ -13,12 +13,18 @@ public class DoorManager : MonoBehaviour // This script should be on the Door Tr
         // Check if the collider is tagged as "Player" and the door is not already open
         if (other.CompareTag("Player") && !isDoorOpen)
         {
-            // Check for A button press on the right-hand controller
-            if (InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed) && isPressed)
+            // Check for grip button press on either hand
+            if (IsGripPressed(XRNode.LeftHand) || IsGripPressed(XRNode.RightHand))
             {
                 OpenDoor();
             }
         }
+    }
+
+    private bool IsGripPressed(XRNode hand)
+    {
+        InputDevice device = InputDevices.GetDeviceAtXRNode(hand);
+        return device.TryGetFeatureValue(CommonUsages.gripButton, out bool isPressed) && isPressed;
     }
 
     void OpenDoor()

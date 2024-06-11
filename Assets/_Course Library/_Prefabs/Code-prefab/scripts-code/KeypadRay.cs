@@ -20,16 +20,22 @@ public class KeypadRay : MonoBehaviour
     {
         if (other.gameObject.CompareTag("KeypadButton")) // Check if the colliding object is a keypad button
         {
+            // Get devices for both hands
             var leftHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-            leftHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool triggerPressed);
+            var rightHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
 
-            if (triggerPressed) // Use the Oculus left-hand trigger button
+            // Check grip (grip button) on both controllers
+            leftHandDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool leftGripPressed);
+            rightHandDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool rightGripPressed);
+
+            // If either grip is pressed
+            if (leftGripPressed || rightGripPressed)
             {
                 // Call a method on the KeypadButton script attached to the button object
                 KeypadKey keypadButton = other.GetComponent<KeypadKey>();
                 if (keypadButton != null)
                 {
-                    keypadButton.SendKey(); // Assume ActivateButton is the method to be called
+                    keypadButton.SendKey(); // Assume SendKey is the method to be called
                 }
             }
         }

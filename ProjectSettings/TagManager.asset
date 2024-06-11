@@ -10,6 +10,7 @@ TagManager:
   - displayText
   - PlayerHand
   - lightbox
+  - Bunkle
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Water
   - UI
   - Hole
-  - 
-  - 
+  - Light
+  - WallMove
   - 
   - 
   - 

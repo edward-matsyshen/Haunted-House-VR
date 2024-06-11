@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class pushableObj : MonoBehaviour
 {
-    public GameObject objectToPush; // Assign this in the inspector
-    public Vector3 pushDirection = Vector3.forward; // Default push direction
-    public float pushForce = 5f; // Push force magnitude
+    [SerializeField] private float pushForce = 10f; // Force applied when pushing the object
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        // Check if the collider is the player
-        if (other.CompareTag("Player")) // Make sure the player has a tag "Player"
+        // Check if the collision is with the XR Rig
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Rigidbody rb = objectToPush.GetComponent<Rigidbody>();
+            // Calculate the direction to apply the force
+            Vector3 pushDirection = collision.contacts[0].point - transform.position;
+            pushDirection = -pushDirection.normalized; // Normalize and invert the direction
 
-            if (rb != null)
-            {
-                // Apply a force to the object's Rigidbody
-                rb.AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
-            }
+            // Apply the force to the Rigidbody
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.AddForce(pushDirection * pushForce, ForceMode.Impulse);
         }
     }
 }

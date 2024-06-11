@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
+
 public class KeypadController : MonoBehaviour
 {
     // Dictionary to map door names to lists of corresponding passwords
@@ -33,11 +34,21 @@ public class KeypadController : MonoBehaviour
 
         doorNameToPasswords.Add("TutorailDoorMesh02", new List<string> { "888", "304" });
 
-        doorNameToPasswords.Add("TutorailDoorMesh03", new List<string> { "888", "532" });
+        doorNameToPasswords.Add("TutorailDoorMesh03", new List<string> {
+        "888", // existing password
+        "532", "523", "352", "325", "253", "235" // all permutations of "532"
+        });
 
-        doorNameToPasswords.Add("TutorialDoorMesh04a", new List<string> { "888", "149", "194", "419", "491", "914", "941" });
+        doorNameToPasswords.Add("TutorailDoorTrigMiniBossMesh", new List<string> {
+        "888", // existing password
+        "236", "263", "326", "362", "623", "632" // all permutations of "236"
+        });
 
-        doorNameToPasswords.Add("TutorialDoorMesh04b", new List<string> { "888", "145", "145", "154", "415", "451", "514", "541"});
+        doorNameToPasswords.Add("TutorialDoorMesh04b", new List<string> {
+        "888", // existing password
+        "541", "514", "451", "415", "154", "145" // all permutations of "541"
+        });
+
 
 
 
@@ -51,7 +62,9 @@ public class KeypadController : MonoBehaviour
 
         //all varations:
 
-        doorNameToPasswords.Add("DoorMesh4", new List<string> { "888", "937", "937", "973", "397", "379", "793", "739"});
+        doorNameToPasswords.Add("DoorMesh4", new List<string> {
+        "888", // existing password
+        "651", "615", "156", "165", "516", "561"});
 
     }
 
