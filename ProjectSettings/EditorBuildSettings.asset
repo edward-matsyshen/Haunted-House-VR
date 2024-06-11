@@ -24,14 +24,17 @@ EditorBuildSettings:
     path: Assets/Scenes/3 Optomized.unity
     guid: ef4027c94b40a1048bac60c3a2ea5c63
   - enabled: 1
-    path: Assets/Scenes/4 EdRoomGhost.unity
-    guid: 2fe7123029d92c7448c6adc9e1be8b5a
+    path: Assets/Scenes/EdRoomGhost.unity
+    guid: c71692237cb81d34fbd5ef9d829c1144
   - enabled: 1
     path: Assets/Scenes/5 InsideHouse.unity
     guid: 1994dc6b3c3302241ac48b721354e500
   - enabled: 1
     path: Assets/Scenes/6 Boss.unity
     guid: 8b2d446feecc3e54a96dfcfc05c4c9cb
+  - enabled: 0
+    path: Assets/Scenes/4 EdRoomGhost.unity
+    guid: 2fe7123029d92c7448c6adc9e1be8b5a
   - enabled: 0
     path: Assets/Scenes/JoeDEMO.unity
     guid: a4a037f11b0f20e4f9d8c07ad5c9d787
